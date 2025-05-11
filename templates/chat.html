@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Чат с LLAMA2 для {{ username }}</title>
+</head>
+<body>
+    <h1>Привет, {{ username }}! Ваш чат с LLAMA2.</h1> <div id="chatContainer">
+        </div>
+
+    <div id="inputArea"> <input type="text" id="queryInput" placeholder="Введите ваш запрос..."> <button id="sendButton">Отправить</button> </div>
+
+    <div id="userData" data-username="{{ username }}"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
