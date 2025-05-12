@@ -5,13 +5,18 @@
     <title>Чат с LLAMA2 для {{ username }}</title>
 </head>
 <body>
-    <h1>Привет, {{ username }}! Ваш чат с LLAMA2.</h1> <div id="chatContainer">
-        </div>
+    <h1>Привет, {{ username }}! Ваш чат с LLAMA2.</h1>
+    <div id="chatContainer">
+    </div>
 
-    <div id="inputArea"> <input type="text" id="queryInput" placeholder="Введите ваш запрос..."> <button id="sendButton">Отправить</button> </div>
+    <div id="inputArea">
+        <input type="text" id="queryInput" placeholder="Введите ваш запрос...">
+        <button id="sendButton">Отправить</button>
+    </div>
 
     <div id="userData" data-username="{{ username }}"></div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e1a2598eb6b06f',t:'MTc0Njk2NjA2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
