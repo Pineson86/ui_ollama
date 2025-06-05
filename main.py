@@ -1,4 +1,3 @@
-# backend.py
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import requests
 import os
@@ -6,10 +5,15 @@ import os
 # Инициализация Flask приложения
 app = Flask(__name__)
 
+# Получаем хост Ollama из переменной окружения, по умолчанию 'localhost'
+OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'localhost')
+OLLAMA_PORT = os.getenv('OLLAMA_PORT', '11434') # Порт Ollama, по умолчанию 11434
+
 # Функция для отправки запроса к локальному Ollama серверу
 # Принимает строку запроса (prompt) и возвращает строку ответа или сообщение об ошибке Ollama
 def query_ollama(prompt: str) -> str:
-    url = 'http://localhost:11434/api/generate'
+    # Используем переменную окружения для формирования URL
+    url = f'http://{OLLAMA_HOST}:{OLLAMA_PORT}/api/generate'
     headers = {'Content-Type': 'application/json'}
     data = {
         "model": "llama2", # Указываем используемую модель LLM
@@ -28,7 +32,7 @@ def query_ollama(prompt: str) -> str:
         return "Я пока отдыхаю. Попробуй разбудить меня чуть попозже!"
     except requests.exceptions.ConnectionError:
         # Обработка ошибки подключения к серверу Ollama
-        return "Ошибка: Ollama сервер недоступен. Проверьте подключение."
+        return f"Ошибка: Ollama сервер ({OLLAMA_HOST}:{OLLAMA_PORT}) недоступен. Проверьте подключение."
     except requests.exceptions.RequestException as e:
         # Обработка других ошибок запросов к Ollama
         print(f"Ошибка при запросе к Ollama: {e}") # Логирование ошибки
@@ -40,8 +44,6 @@ def query_ollama(prompt: str) -> str:
 def handle_query():
     data = request.get_json()
     prompt = data.get("prompt", "").strip() # Получаем поле "prompt", пустая строка по умолчанию, удаляем пробелы
-
-    # Пустой prompt будет передан в query_ollama
 
     print(f"Received query from frontend: {prompt}") # Логируем запрос
     answer = query_ollama(prompt) # Получаем ответ от Ollama (или сообщение об ошибке Ollama)
@@ -68,11 +70,9 @@ def login():
             return redirect(url_for('chat', username=username))
         else:
             # Если логин пустой, снова показываем форму логина
-            # Этот return был удален
-            return render_template('index.html') # Убрали передачу error, т.к. шаблон его не отображает
+            return render_template('index.html')
 
     # Если метод GET или другой (не POST), показываем форму логина
-    # Этот return был удален
     return render_template('index.html')
 
 
@@ -84,5 +84,7 @@ def chat(username):
 
 
 if __name__ == '__main__':
-    # Запуск Flask приложения
+    # Запуск Flask приложения для тестовых целей
+    # '0.0.0.0' делает его доступным извне контейнера
+    # debug=True позволяет автоперезагрузку при изменениях кода и более подробные ошибки
     app.run(host='0.0.0.0', port=5000, debug=True)
